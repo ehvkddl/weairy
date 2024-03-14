@@ -55,8 +55,6 @@ extension NetworkManagerImpl {
                         return promise(.failure(error))
                     }
                     
-                    print(String(data: response.data, encoding: .utf8))
-                    
                     let decodedData = decode(responseType.self, data: response.data)
                     
                     switch decodedData {
