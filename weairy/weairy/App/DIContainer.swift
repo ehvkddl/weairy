@@ -37,4 +37,13 @@ class DIContainer: ObservableObject {
         )
     }
     
+    func makeWeatherView() -> WeatherView {
+        let vm = makeWeatherViewModel()
+        return WeatherView(vm: vm)
+    }
+    
+    func makeWeatherViewModel() -> WeatherViewModel {
+        WeatherViewModel(services: services)
+    }
+    
 }

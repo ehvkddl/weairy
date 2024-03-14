@@ -13,7 +13,9 @@ struct weairyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            WeatherView()
+            let weatherView = container.makeWeatherView()
+            
+            weatherView
                 .environmentObject(container)
         }
     }
