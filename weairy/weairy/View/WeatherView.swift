@@ -16,6 +16,8 @@ struct WeatherView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+        }
     }
 }
 
