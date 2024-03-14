@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct weairyApp: App {
-    @StateObject var container: DIContainer = .init(services: ServiceImpl())
+    @StateObject var container: DIContainer = DIContainer()
     
     var body: some Scene {
         WindowGroup {
