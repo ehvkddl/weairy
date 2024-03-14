@@ -23,3 +23,12 @@ struct AllWeatherResponseDTO: Decodable {
         case current, hourly, daily
     }
 }
+
+extension AllWeatherResponseDTO {
+    func toModel() -> Weather {
+        return .init(current: current.toModel(),
+                     hourly: hourly.map { $0.toModel() },
+                     daily: daily.map { $0.toModel() }
+        )
+    }
+}

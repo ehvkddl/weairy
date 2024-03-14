@@ -42,6 +42,16 @@ struct DailyResponseDTO: Codable {
     }
 }
 
+extension DailyResponseDTO {
+    func toModel() -> Daily {
+        return .init(dt: dt,
+                     weatherID: weather[0].id,
+                     tempMin: Int(temp.min),
+                     tempMax: Int(temp.max)
+        )
+    }
+}
+
 // MARK: - FeelsLike
 struct FeelsLikeResponseDTO: Codable {
     let morn: Double    // 아침 체감 기온

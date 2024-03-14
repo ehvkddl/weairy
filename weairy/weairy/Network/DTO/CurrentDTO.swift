@@ -35,3 +35,21 @@ struct CurrentResponseDTO: Decodable {
         case weather
     }
 }
+
+extension CurrentResponseDTO {
+    func toModel() -> Current {
+        return .init(temp: Int(temp),
+                     weatherID: weather[0].id,
+                     weatherDescription: weather[0].description,
+                     feelsLike: Int(feelsLike),
+                     clouds: clouds,
+                     uvi: uvi,
+                     visibility: visibility,
+                     windSpeed: windSpeed,
+                     windGust: windGust,
+                     windDeg: windDeg,
+                     sunrise: sunrise,
+                     sunset: sunset
+        )
+    }
+}

@@ -36,3 +36,12 @@ struct HourlyResponseDTO: Decodable {
         case weather, pop
     }
 }
+
+extension HourlyResponseDTO {
+    func toModel() -> Hourly {
+        return .init(dt: dt,
+                     weatherID: weather[0].id,
+                     temp: Int(temp)
+        )
+    }
+}
