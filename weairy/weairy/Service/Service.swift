@@ -8,9 +8,17 @@
 import Foundation
 
 protocol Service {
-    
+    var weatherService: WeatherService { get set }
 }
 
 class ServiceImpl: Service {
+    var weatherService: WeatherService
     
+    init(weatherService: WeatherService) {
+        self.weatherService = weatherService
+    }
+}
+
+class StubServices: Service {
+    var weatherService: WeatherService = WeatherServiceImpl(provider: StubWeatherProvider())
 }
