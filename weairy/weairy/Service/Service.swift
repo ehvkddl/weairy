@@ -18,3 +18,7 @@ class ServiceImpl: Service {
         self.weatherService = weatherService
     }
 }
+
+class StubServices: Service {
+    var weatherService: WeatherService = WeatherServiceImpl(provider: StubWeatherProvider())
+}

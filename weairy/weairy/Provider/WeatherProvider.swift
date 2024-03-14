@@ -30,3 +30,11 @@ extension WeatherProviderImpl {
     }
     
 }
+
+class StubWeatherProvider: WeatherProvider {
+    
+    func fetchWeather(query: [String : Any]) -> AnyPublisher<WeatherResponseDTO, NetworkError> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+}
