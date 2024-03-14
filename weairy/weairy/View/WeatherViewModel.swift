@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 class WeatherViewModel: ObservableObject {
-    @Published var weatherData: WeatherResponseDTO?
+    @Published var weatherData: AllWeatherResponseDTO?
     
     private var services: Service
     private var subscriptions = Set<AnyCancellable>()
