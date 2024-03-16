@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol WeatherProvider {
-    func fetchWeather(query: [String: Any]) -> AnyPublisher<WeatherResponseDTO, NetworkError>
+    func fetchWeather(query: [String: Any]) -> AnyPublisher<AllWeatherResponseDTO, NetworkError>
 }
 
 class WeatherProviderImpl: WeatherProvider {
@@ -22,10 +22,10 @@ class WeatherProviderImpl: WeatherProvider {
 
 extension WeatherProviderImpl {
     
-    func fetchWeather(query: [String: Any]) -> AnyPublisher<WeatherResponseDTO, NetworkError> {
+    func fetchWeather(query: [String: Any]) -> AnyPublisher<AllWeatherResponseDTO, NetworkError> {
         return networkManager.request(
             target: WeatherAPI.fetchAll(query: query),
-            responseType: WeatherResponseDTO.self
+            responseType: AllWeatherResponseDTO.self
         )
     }
     
@@ -33,7 +33,7 @@ extension WeatherProviderImpl {
 
 class StubWeatherProvider: WeatherProvider {
     
-    func fetchWeather(query: [String : Any]) -> AnyPublisher<WeatherResponseDTO, NetworkError> {
+    func fetchWeather(query: [String : Any]) -> AnyPublisher<AllWeatherResponseDTO, NetworkError> {
         Empty().eraseToAnyPublisher()
     }
     

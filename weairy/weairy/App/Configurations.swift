@@ -13,7 +13,6 @@ enum Configurations {
         guard let url = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String else {
             fatalError("baseURL must not be empty in plist")
         }
-        print(url)
         return url
     }()
     

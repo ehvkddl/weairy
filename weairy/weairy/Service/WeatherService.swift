@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol WeatherService {
-    func fetchWeather() -> AnyPublisher<WeatherResponseDTO, NetworkError>
+    func fetchWeather() -> AnyPublisher<AllWeatherResponseDTO, NetworkError>
 }
 
 class WeatherServiceImpl: WeatherService {
@@ -24,7 +24,7 @@ class WeatherServiceImpl: WeatherService {
 
 extension WeatherServiceImpl {
     
-    func fetchWeather() -> AnyPublisher<WeatherResponseDTO, NetworkError> {
+    func fetchWeather() -> AnyPublisher<AllWeatherResponseDTO, NetworkError> {
         let query = [
             "lat": "37.5665851",
             "lon": "126.9782038",
