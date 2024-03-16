@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 class WeatherViewModel: ObservableObject {
-    @Published var weatherData: AllWeatherResponseDTO?
+    @Published var weatherData: Weather? = Weather.dummyWeather
     
     private var services: Service
     private var subscriptions = Set<AnyCancellable>()
@@ -24,7 +24,6 @@ class WeatherViewModel: ObservableObject {
                 guard let `self` else { return }
                 
                 if case .failure = completion {
-                    weatherData = nil
                 }
             } receiveValue: { [weak self] response in
                 guard let `self` else { return }
