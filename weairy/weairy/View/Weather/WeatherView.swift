@@ -47,16 +47,16 @@ struct WeatherView: View {
                     } label: {
                         HStack(spacing: 0) {
                             Text("서울")
-                                .font(.latoBold18)
+                                .font(WFont.style(.lato, weight: .bold, size: 18))
                             Image(systemName: "location.fill")
                         }
                     }
                     
                     Text("의 날씨")
-                        .font(.latoLight18)
+                        .font(WFont.style(.lato, weight: .light, size: 18))
                     
                     Text(vm.currentWeather.weatherDescription)
-                        .font(.latoLight18)
+                        .font(WFont.style(.lato, weight: .light, size: 18))
                         .padding(.leading, 5)
                 }
                 .padding(.top, 100)
@@ -68,10 +68,10 @@ struct WeatherView: View {
                     // MARK: temperature
                     HStack(alignment: .top, spacing: 3) {
                         Text("\(vm.currentWeather.temp)")
-                            .font(.poppinSemiBold110)
+                            .font(WFont.style(.poppin, weight: .semiBold, size: 110))
                         Text("°C")
                             .padding(.top, 24)
-                            .font(.poppinRegular30)
+                            .font(WFont.style(.poppin, weight: .regular, size: 30))
                     }
                     .frame(width: (Util.screenWidth - 40) / 2)
                     .padding(.top, 10)

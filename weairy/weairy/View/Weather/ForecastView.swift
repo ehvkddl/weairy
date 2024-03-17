@@ -22,7 +22,7 @@ struct ForecastView: View {
                 
                 HStack {
                     Text("시간별 날씨")
-                        .font(.latoBold18)
+                        .font(WFont.style(.lato, weight: .bold, size: 18))
                         .foregroundStyle(.fancyBlue)
                     
                     Spacer()
@@ -44,7 +44,7 @@ struct ForecastView: View {
                 
                 HStack {
                     Text("요일별 날씨")
-                        .font(.latoBold18)
+                        .font(WFont.style(.lato, weight: .bold, size: 18))
                         .foregroundStyle(.fancyBlue)
                     
                     Spacer()

@@ -27,7 +27,7 @@ struct CurrentWeatherView: View {
                 
                 HStack(alignment: .top, spacing: 0) {
                     Text(detail.processedData)
-                        .font(.latoBold30)
+                        .font(WFont.style(.lato, weight: .bold, size: 30))
                         .minimumScaleFactor(0.3)
                     Text(detail.category.unit ?? "")
                         .padding(.top, 6)

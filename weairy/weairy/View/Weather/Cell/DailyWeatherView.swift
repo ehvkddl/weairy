@@ -13,7 +13,7 @@ struct DailyWeatherView: View {
     var body: some View {
         HStack {
             Text(weather.dt)
-                .font(.latoBold18)
+                .font(WFont.style(.lato, weight: .bold, size: 18))
                 .foregroundStyle(.fancyBlue)
             
             Spacer()
@@ -27,9 +27,9 @@ struct DailyWeatherView: View {
                 HStack(alignment: .top, spacing: 0) {
                     Spacer()
                     Text("\(weather.tempMin)")
-                        .font(.poppinMedium22)
+                        .font(WFont.style(.poppin, weight: .medium, size: 22))
                     Text("°C")
-                        .font(.poppinMedium12)
+                        .font(WFont.style(.poppin, weight: .medium, size: 22))
                         .padding(.top, 3)
                 }
                 .frame(width: 45)
@@ -37,9 +37,9 @@ struct DailyWeatherView: View {
                 
                 HStack(alignment: .top, spacing: 0) {
                     Text("\(weather.tempMax)")
-                        .font(.poppinMedium22)
+                        .font(WFont.style(.poppin, weight: .medium, size: 22))
                     Text("°C")
-                        .font(.poppinMedium12)
+                        .font(WFont.style(.poppin, weight: .medium, size: 22))
                         .padding(.top, 3)
                 }
                 .frame(width: 45)

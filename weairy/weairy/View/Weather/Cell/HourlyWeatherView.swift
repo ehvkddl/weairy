@@ -23,7 +23,7 @@ struct HourlyWeatherView: View {
             
             VStack(spacing: 0) {
                 Text(weather.dt)
-                    .font(.latoRegular18)
+                    .font(WFont.style(.lato, weight: .regular, size: 18))
                     .foregroundStyle(.white)
                     .padding(.top, 7)
                 
@@ -33,10 +33,10 @@ struct HourlyWeatherView: View {
                     
                 HStack(alignment: .top, spacing: 0) {
                     Text("\(weather.temp)")
-                        .font(.poppinMedium22)
+                        .font(WFont.style(.poppin, weight: .medium, size: 22))
                     
                     Text("°C")
-                        .font(.poppinMedium12)
+                        .font(WFont.style(.poppin, weight: .medium, size: 12))
                         .padding(.top, 3)
                 }
                 .foregroundStyle(.darkBlue)
