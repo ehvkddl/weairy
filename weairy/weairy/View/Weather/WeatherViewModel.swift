@@ -10,6 +10,9 @@ import Foundation
 
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: Weather? = Weather.dummyWeather
+    @Published var currentWeather: Current = .dummyCurrent
+    @Published var hourlyWeatherDatas: [Hourly] = Hourly.dummyHourly
+    @Published var dailyWeatherDatas: [Daily] = Daily.dummyDaily
     
     private var services: Service
     private var subscriptions = Set<AnyCancellable>()
@@ -27,8 +30,13 @@ class WeatherViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] response in
                 guard let `self` else { return }
+
+                currentWeather = response.current
                 
-                weatherData = response
+                hourlyWeatherDatas = response.hourly
+                hourlyWeatherDatas.removeFirst()
+                
+                dailyWeatherDatas = response.daily
             }
             .store(in: &subscriptions)
 

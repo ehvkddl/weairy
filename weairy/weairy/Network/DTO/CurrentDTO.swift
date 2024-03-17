@@ -19,7 +19,7 @@ struct CurrentResponseDTO: Decodable {
     let clouds: Int             // 흐림, %
     let visibility: Int         // 평균 가시성(미터) 가시성의 최대 값은 10km
     let windSpeed: Double       // 바람 속도. 단위 – 기본값: 미터/초
-    let windGust: Double?        // 돌풍. 단위 – 기본값: 미터/초
+    let windGust: Double?       // 돌풍. 단위 – 기본값: 미터/초
     let windDeg: Int            // 풍향, 각도(기상)
     let weather: [WeatherResponseDTO]
 
@@ -38,18 +38,30 @@ struct CurrentResponseDTO: Decodable {
 
 extension CurrentResponseDTO {
     func toModel() -> Current {
+        var detailDatas: [Current.DetailData] = []
+        
+        detailDatas.append(Current.DetailData(category: .feelsLike, rawData: Int(round(feelsLike))))
+        detailDatas.append(Current.DetailData(category: .humidity, rawData: Int(humidity)))
+        detailDatas.append(Current.DetailData(category: .dewPoint, rawData: Int(round(dewPoint))))
+        detailDatas.append(Current.DetailData(category: .clouds, rawData: clouds))
+        detailDatas.append(Current.DetailData(category: .uvi, rawData: Int(round(uvi))))
+        detailDatas.append(Current.DetailData(category: .visibility, rawData: visibility))
+        detailDatas.append(Current.DetailData(category: .windSpeed, rawData: Int(round(windSpeed))))
+        if let windGust {
+            detailDatas.append(Current.DetailData(category: .windGust, rawData: Int(round(windGust))))
+        }
+        detailDatas.append(Current.DetailData(category: .windDeg, rawData: windDeg))
+        if let sunrise, let sunset {
+            detailDatas.append(Current.DetailData(category: .sunrise, rawData: sunrise))
+            detailDatas.append(Current.DetailData(category: .sunset, rawData: sunset))
+        }
+        
+        detailDatas.sort { $0.category.order < $1.category.order }
+        
         return .init(temp: Int(temp),
                      weatherID: weather[0].id,
                      weatherDescription: weather[0].description,
-                     feelsLike: Int(feelsLike),
-                     clouds: clouds,
-                     uvi: uvi,
-                     visibility: visibility,
-                     windSpeed: windSpeed,
-                     windGust: windGust,
-                     windDeg: windDeg,
-                     sunrise: sunrise,
-                     sunset: sunset
+                     details: detailDatas
         )
     }
 }
