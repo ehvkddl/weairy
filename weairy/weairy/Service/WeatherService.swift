@@ -9,10 +9,12 @@ import Combine
 import Foundation
 
 protocol WeatherService {
-    func fetchWeather() -> AnyPublisher<AllWeatherResponseDTO, NetworkError>
+    func fetchWeather() -> AnyPublisher<Weather, NetworkError>
 }
 
 class WeatherServiceImpl: WeatherService {
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     var provider: WeatherProvider
     
@@ -24,7 +26,7 @@ class WeatherServiceImpl: WeatherService {
 
 extension WeatherServiceImpl {
     
-    func fetchWeather() -> AnyPublisher<AllWeatherResponseDTO, NetworkError> {
+    func fetchWeather() -> AnyPublisher<Weather, NetworkError> {
         let query = [
             "lat": "37.5665851",
             "lon": "126.9782038",
@@ -34,7 +36,23 @@ extension WeatherServiceImpl {
             "exclude": "minutely,alerts"
         ]
         
-        return provider.fetchWeather(query: query)
+        return Future<Weather, NetworkError> { [weak self] promise in
+            guard let `self` else { return }
+            
+            provider.fetchWeather(query: query)
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        promise(.failure(error))
+                    }
+                } receiveValue: { response in
+                    let weather = response.toModel()
+                    
+                    promise(.success(weather))
+                }
+                .store(in: &subscriptions)
+        }
+        .eraseToAnyPublisher()
+        
     }
     
 }

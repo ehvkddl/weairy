@@ -8,7 +8,7 @@
 import Foundation
 
 struct DailyResponseDTO: Codable {
-    let dt: Int                           // 예측 데이터 시간
+    let dt: Double                        // 예측 데이터 시간
     let sunrise, sunset: Int?             // 일출, 일몰
     let moonrise, moonset: Int            // 월출, 월몰
     let moonPhase: Double                 // 달 위상
@@ -44,7 +44,10 @@ struct DailyResponseDTO: Codable {
 
 extension DailyResponseDTO {
     func toModel() -> Daily {
-        return .init(dt: dt,
+        let date = Date(timeIntervalSince1970: dt)
+        let dtStr = DateFormatter.day.string(from: date)
+    
+        return .init(dt: dtStr,
                      weatherID: weather[0].id,
                      tempMin: Int(temp.min),
                      tempMax: Int(temp.max)
