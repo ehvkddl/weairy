@@ -40,27 +40,34 @@ struct WeatherView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 // MARK: location
-                Button{
-                    forecastViewOffsetHeight = plainOffsetHeight
-                    showForcastView = false
-                } label: {
-                    HStack(spacing: 0) {
-                        Text("서울")
-                            .font(.latoBold18)
-                        Image(systemName: "location.fill")
-                        Text("의 날씨")
-                            .font(.latoLight18)
+                HStack(spacing: 0) {
+                    Button{
+                        forecastViewOffsetHeight = plainOffsetHeight
+                        showForcastView = false
+                    } label: {
+                        HStack(spacing: 0) {
+                            Text("서울")
+                                .font(.latoBold18)
+                            Image(systemName: "location.fill")
+                        }
                     }
-                    .foregroundStyle(.white)
+                    
+                    Text("의 날씨")
+                        .font(.latoLight18)
+                    
+                    Text(vm.currentWeather.weatherDescription)
+                        .font(.latoLight18)
+                        .padding(.leading, 5)
                 }
                 .padding(.top, 100)
                 .padding(.leading, 20)
+                .foregroundStyle(.white)
                 
                 
                 HStack(spacing: 0) {
                     // MARK: temperature
                     HStack(alignment: .top, spacing: 3) {
-                        Text("\(vm.weatherData?.current.temp ?? 0)")
+                        Text("\(vm.currentWeather.temp)")
                             .font(.poppinSemiBold110)
                         Text("°C")
                             .padding(.top, 24)
@@ -70,7 +77,7 @@ struct WeatherView: View {
                     .padding(.top, 10)
                     
                     // MARK: weather image
-                    Image(.sunCloudHailstone)
+                    Image(WeatherCondition.from(statusCode: vm.currentWeather.weatherID).rawValue)
                         .resizable()
                         .scaledToFit()
                 }
@@ -81,8 +88,8 @@ struct WeatherView: View {
                 // MARK: current weather detail
                 ScrollView(.horizontal) {
                     LazyHStack {
-                        ForEach(0...10, id: \.self) { index in
-                            CurrentWeatherView()
+                        ForEach(vm.currentWeather.details) {
+                            CurrentWeatherView(detail: $0)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -97,7 +104,6 @@ struct WeatherView: View {
                         .foregroundStyle(.clear)
                         .onAppear {
                             let height = geometry.size.height
-                            let safeAreaHeight = geometry.safeAreaInsets.top
                             
                             remainingScreenHeight = height
                             
@@ -133,7 +139,9 @@ struct WeatherView: View {
                     }
                     
                     // MARK: forecast content
-                    ForecastView(showForecastView: $showForcastView)
+                    ForecastView(hourlyWeather: $vm.hourlyWeatherDatas, 
+                                 dailyWeather: $vm.dailyWeatherDatas,
+                                 showForecastView: $showForcastView)
                         .scrollDisabled(!showForcastView)
                         .padding(.bottom, 35)
                 }
@@ -175,6 +183,10 @@ struct WeatherView: View {
                     }
             )
         }
+        .onAppear {
+            vm.fetchWeather()
+        }
+        
     }
 }
 

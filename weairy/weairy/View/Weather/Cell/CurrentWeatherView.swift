@@ -8,26 +8,32 @@
 import SwiftUI
 
 struct CurrentWeatherView: View {
+    let detail: Current.DetailData
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image(.waterDrop)
+                Image(detail.category.rawValue)
                     .resizable()
                     .frame(width: 45, height: 45)
                     .padding(.leading, 8)
                 Spacer()
             }
             
-            Text("습도")
-                .padding(.top, 8)
-                .padding(.leading, 16)
-            
-            HStack(spacing: 0) {
-                Text("55")
-                    .font(.latoBold30)
-                Text("%")
+            VStack(alignment: .leading, spacing: 0) {
+                Text(detail.category.title)
+                    .padding(.top, 8)
+                    .padding(.leading, 16)
+                
+                HStack(alignment: .top, spacing: 0) {
+                    Text(detail.processedData)
+                        .font(.latoBold30)
+                        .minimumScaleFactor(0.3)
+                    Text(detail.category.unit ?? "")
+                        .padding(.top, 6)
+                }
+                .padding(.horizontal, 16)
             }
-            .padding(.leading, 16)
         }
         .frame(width: Util.screenWidth / 2 - 30, height: (Util.screenWidth / 2 - 30) * 0.82)
         .foregroundStyle(.white)
@@ -40,5 +46,5 @@ struct CurrentWeatherView: View {
 }
 
 #Preview {
-    CurrentWeatherView()
+    CurrentWeatherView(detail: Current.DetailData(category: .humidity, rawData: 80))
 }

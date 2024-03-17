@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ForecastView: View {
+    @Binding var hourlyWeather: [Hourly]
+    @Binding var dailyWeather: [Daily]
+    
     @Binding var showForecastView: Bool
     
     var body: some View {
@@ -28,8 +31,8 @@ struct ForecastView: View {
                 
                 ScrollView(.horizontal) {
                     LazyHStack(spacing: 14) {
-                        ForEach(0...10, id: \.self) { index in
-                            HourlyWeatherView()
+                        ForEach(hourlyWeather) {
+                            HourlyWeatherView(weather: $0)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -49,10 +52,10 @@ struct ForecastView: View {
                 .padding(.leading, 17)
                 
                 VStack {
-                    ForEach(1...8, id: \.self) { i in
-                        DailyWeatherView()
+                    ForEach(Array(zip(dailyWeather.indices, dailyWeather)), id: \.0) { idx, item in
+                        DailyWeatherView(weather: item)
                         
-                        if i < 8 {
+                        if idx < 8 {
                             Divider()
                                 .padding(.horizontal, 23)
                         }
@@ -79,5 +82,7 @@ struct ForecastView: View {
 }
 
 #Preview {
-    ForecastView(showForecastView: .constant(false))
+    ForecastView(hourlyWeather: .constant(Hourly.dummyHourly), 
+                 dailyWeather: .constant(Daily.dummyDaily),
+                 showForecastView: .constant(false))
 }

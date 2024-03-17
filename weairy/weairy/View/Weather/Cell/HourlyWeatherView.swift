@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HourlyWeatherView: View {
+    let weather: Hourly
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -20,17 +22,17 @@ struct HourlyWeatherView: View {
                 .padding(.top, 34)
             
             VStack(spacing: 0) {
-                Text("14:00")
+                Text(weather.dt)
                     .font(.latoRegular18)
                     .foregroundStyle(.white)
                     .padding(.top, 7)
                 
-                Image(.sunCloudHailstone)
+                Image(WeatherCondition.from(statusCode: weather.weatherID).rawValue)
                     .resizable()
                     .scaledToFit()
                     
                 HStack(alignment: .top, spacing: 0) {
-                    Text("22")
+                    Text("\(weather.temp)")
                         .font(.poppinMedium22)
                     
                     Text("°C")
@@ -46,5 +48,5 @@ struct HourlyWeatherView: View {
 }
 
 #Preview {
-    HourlyWeatherView()
+    HourlyWeatherView(weather: .dummyHourly[0])
 }

@@ -9,7 +9,6 @@ import Combine
 import Foundation
 
 class WeatherViewModel: ObservableObject {
-    @Published var weatherData: Weather? = Weather.dummyWeather
     @Published var currentWeather: Current = .dummyCurrent
     @Published var hourlyWeatherDatas: [Hourly] = Hourly.dummyHourly
     @Published var dailyWeatherDatas: [Daily] = Daily.dummyDaily

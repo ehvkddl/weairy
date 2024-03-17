@@ -8,26 +8,44 @@
 import SwiftUI
 
 struct DailyWeatherView: View {
+    let weather: Daily
+    
     var body: some View {
         HStack {
-            Text("금")
+            Text(weather.dt)
                 .font(.latoBold18)
                 .foregroundStyle(.fancyBlue)
             
             Spacer()
             
-            Image(.sunCloudHailstone)
+            Image(WeatherCondition.from(statusCode: weather.weatherID).rawValue)
                 .resizable()
                 .scaledToFit()
+                .padding(.trailing, 5)
             
-            HStack(alignment: .top, spacing: 0) {
-                Text("22")
-                    .font(.poppinMedium22)
-                Text("°C")
-                    .font(.poppinMedium12)
-                    .padding(.top, 3)
+            HStack(spacing: 10) {
+                HStack(alignment: .top, spacing: 0) {
+                    Spacer()
+                    Text("\(weather.tempMin)")
+                        .font(.poppinMedium22)
+                    Text("°C")
+                        .font(.poppinMedium12)
+                        .padding(.top, 3)
+                }
+                .frame(width: 45)
+                .foregroundStyle(.fancyBlue)
+                
+                HStack(alignment: .top, spacing: 0) {
+                    Text("\(weather.tempMax)")
+                        .font(.poppinMedium22)
+                    Text("°C")
+                        .font(.poppinMedium12)
+                        .padding(.top, 3)
+                }
+                .frame(width: 45)
+                .foregroundStyle(.transitionBlue)
             }
-            .foregroundStyle(.fancyBlue)
+            
         }
         .padding(.horizontal, 23)
         .frame(width: Util.screenWidth, height: 50)
@@ -35,5 +53,5 @@ struct DailyWeatherView: View {
 }
 
 #Preview {
-    DailyWeatherView()
+    DailyWeatherView(weather: Daily.dummyDaily[0])
 }
