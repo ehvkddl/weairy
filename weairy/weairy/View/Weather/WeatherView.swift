@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WeatherView: View {
+    @Environment (\.scenePhase) var scenePhase
     @StateObject var vm: WeatherViewModel
     
     @State private var showForcastView: Bool = false
@@ -183,8 +184,17 @@ struct WeatherView: View {
                     }
             )
         }
-        .onChange {
-            vm.fetchWeather()
+        .onChangeWithCondition(of: scenePhase) { newScenePhase in
+            switch newScenePhase {
+            case .active:
+                vm.fetchWeather(of: selectedCoordinates)
+                
+            default: break
+            }
+        }
+        .onChangeWithCondition(of: selectedCoordinates) { newValue in
+            vm.fetchWeather(of: selectedCoordinates)
+        }
         }
         
     }
