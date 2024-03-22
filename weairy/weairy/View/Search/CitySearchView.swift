@@ -14,7 +14,7 @@ struct CitySearchView: View {
     @Binding var showCitySerachView: Bool
     
     var body: some View {
-        VStack(alignment: .trailing) {
+        VStack(alignment: .leading) {
             Button {
                 showCitySerachView = false
             } label: {
@@ -24,6 +24,13 @@ struct CitySearchView: View {
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.darkBlue)
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            
+            // MARK: - Localization
+            Text("Localization")
+                .font(WFont.style(.poppin, weight: .semiBold, size: 17))
+                .foregroundStyle(.darkBlue)
+                .padding(.top, 10)
             
             TextField("도시 검색", text: $vm.searchQuery)
                 .frame(height: 40)
@@ -32,25 +39,36 @@ struct CitySearchView: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(.tertiary, lineWidth: 1)
                 }
+            
+            // MARK: - Suggestion
+            Text("Suggestion")
+                .font(WFont.style(.poppin, weight: .semiBold, size: 15))
+                .foregroundStyle(.secondary)
+                .opacity(vm.searchResults.isEmpty ? 0 : 1)
                 .padding(.top, 15)
             
-            List(vm.searchResults, id: \.self) { result in
-                Button {
-                    Task {
-                        guard let coordinate = await vm.getCoordinates(of: result) else {
-                            selectedCoordinates = nil
-                            return
+            ScrollView {
+                ForEach(vm.searchResults, id: \.self) { result in
+                    LazyVStack {
+                        SuggestionItemView(title: result.title) {
+                            Task {
+                                guard let coordinate = await vm.getCoordinates(of: result) else {
+                                    selectedCoordinates = nil
+                                    return
+                                }
+                                selectedCoordinates = Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                            }
+                            
+                            showCitySerachView = false
                         }
-                        selectedCoordinates = Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                        .frame(height: 45)
                     }
-                    
-                    showCitySerachView = false
-                } label: {
-                    Text("\(result.title)")
                 }
+                
             }
-            .listStyle(.plain)
             .scrollIndicators(.hidden)
+            .padding(.top, 10)
+            
         }
         .padding(20)
     }
