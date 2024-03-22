@@ -34,6 +34,7 @@ class LocationServiceImpl: NSObject, LocationService {
         super.init()
         
         searchCompleter.delegate = self
+        searchCompleter.resultTypes = .address
     }
 }
 
@@ -65,7 +66,7 @@ extension LocationServiceImpl: MKLocalSearchCompleterDelegate {
     }
     
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        print("도시 찾기 에러")
+        searchResultsSubject.send([])
     }
     
 }
