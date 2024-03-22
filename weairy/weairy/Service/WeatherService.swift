@@ -9,7 +9,10 @@ import Combine
 import Foundation
 
 protocol WeatherService {
-    func fetchWeather() -> AnyPublisher<Weather, NetworkError>
+    func fetchWeather(
+        latitude: Double,
+        longitude: Double
+    ) -> AnyPublisher<Weather, NetworkError>
 }
 
 class WeatherServiceImpl: WeatherService {
@@ -26,10 +29,13 @@ class WeatherServiceImpl: WeatherService {
 
 extension WeatherServiceImpl {
     
-    func fetchWeather() -> AnyPublisher<Weather, NetworkError> {
+    func fetchWeather(
+        latitude: Double,
+        longitude: Double
+    ) -> AnyPublisher<Weather, NetworkError> {
         let query = [
-            "lat": "37.5665851",
-            "lon": "126.9782038",
+            "lat": "\(latitude)",
+            "lon": "\(longitude)",
             "appid": Configurations.weatherKey,
             "units": "metric",
             "lang": "kr",

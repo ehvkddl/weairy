@@ -21,23 +21,30 @@ class WeatherViewModel: ObservableObject {
     }
     
     func fetchWeather() {
-        services.weatherService.fetchWeather()
-            .sink { [weak self] completion in
-                guard let `self` else { return }
-                
-                if case .failure = completion {
-                }
-            } receiveValue: { [weak self] response in
-                guard let `self` else { return }
-
-                currentWeather = response.current
-                
-                hourlyWeatherDatas = response.hourly
-                hourlyWeatherDatas.removeFirst()
-                
-                dailyWeatherDatas = response.daily
+        let location = services.locationService.fetchCurrentLocationCoordinates()
+        
+        guard let location else { return }
+        
+        services.weatherService.fetchWeather(
+            latitude: location.latitude,
+            longitude: location.longitude
+        )
+        .sink { [weak self] completion in
+            guard let `self` else { return }
+            
+            if case .failure = completion {
             }
-            .store(in: &subscriptions)
+        } receiveValue: { [weak self] response in
+            guard let `self` else { return }
+            
+            currentWeather = response.current
+            
+            hourlyWeatherDatas = response.hourly
+            hourlyWeatherDatas.removeFirst()
+            
+            dailyWeatherDatas = response.daily
+        }
+        .store(in: &subscriptions)
 
     }
     
