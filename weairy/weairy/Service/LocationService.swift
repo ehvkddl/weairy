@@ -16,6 +16,8 @@ protocol LocationService {
     func fetchCurrentLocationCoordinates() -> CLLocationCoordinate2D?
     
     func searchCityNames(for input: String)
+    
+    func fetchCoordinates(for completion: MKLocalSearchCompletion) async -> CLLocationCoordinate2D?
 }
 
 class LocationServiceImpl: NSObject, LocationService {
@@ -64,6 +66,22 @@ extension LocationServiceImpl: MKLocalSearchCompleterDelegate {
     
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         print("도시 찾기 에러")
+    }
+    
+}
+
+extension LocationServiceImpl {
+    
+    func fetchCoordinates(for completion: MKLocalSearchCompletion) async -> CLLocationCoordinate2D? {
+        let searchRequest = MKLocalSearch.Request(completion: completion)
+        let search = MKLocalSearch(request: searchRequest)
+
+        do {
+            let response = try await search.start()
+            return response.mapItems.first?.placemark.coordinate
+        } catch {
+            return nil
+        }
     }
     
 }

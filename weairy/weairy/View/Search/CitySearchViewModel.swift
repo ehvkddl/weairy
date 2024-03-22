@@ -41,4 +41,11 @@ class CitySearchViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    func getCoordinates(of completion: MKLocalSearchCompletion) async -> Coordinate? {
+        let coordinates = await services.locationService.fetchCoordinates(for: completion)
+        guard let coordinates else { return nil }
+        
+        return Coordinate(latitude: coordinates.latitude, longitude: coordinates.longitude)
+    }
+    
 }

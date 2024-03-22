@@ -51,4 +51,8 @@ class DIContainer: ObservableObject {
         WeatherViewModel(services: services)
     }
     
+    func makeCitySerchViewModel() -> CitySearchViewModel {
+        CitySearchViewModel(services: services)
+    }
+    
 }

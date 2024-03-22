@@ -10,6 +10,9 @@ import SwiftUI
 struct CitySearchView: View {
     @StateObject var vm: CitySearchViewModel
     
+    @Binding var selectedCoordinates: Coordinate?
+    @Binding var showCitySerachView: Bool
+    
     var body: some View {
         VStack(alignment: .trailing) {
             Button {
@@ -33,6 +36,15 @@ struct CitySearchView: View {
             
             List(vm.searchResults, id: \.self) { result in
                 Button {
+                    Task {
+                        guard let coordinate = await vm.getCoordinates(of: result) else {
+                            selectedCoordinates = nil
+                            return
+                        }
+                        selectedCoordinates = Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                    }
+                    
+                    showCitySerachView = false
                 } label: {
                     Text("\(result.title)")
                 }
@@ -42,4 +54,12 @@ struct CitySearchView: View {
         }
         .padding(20)
     }
+}
+
+#Preview {
+    CitySearchView(
+        vm: .init(services: StubServices()), 
+        selectedCoordinates: .constant(Coordinate(latitude: 37.564713, longitude: 126.975122)),
+        showCitySerachView: .constant(true)
+    )
 }

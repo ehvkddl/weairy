@@ -22,13 +22,24 @@ class WeatherViewModel: ObservableObject {
         self.services = services
     }
     
-    func fetchWeather() {
-        let location = services.locationService.fetchCurrentLocationCoordinates()
+    func fetchWeather(of coordinate: Coordinate?) {
+        guard let coordinate else {
+            let location = services.locationService.fetchCurrentLocationCoordinates()
+            
+            guard let l = location else { return }
+            let coordinate = Coordinate(latitude: l.latitude, longitude: l.longitude)
+            
+            setWeatherView(coordinate: coordinate)
+            
+            return
+        }
         
-        guard let location else { return }
-        
-        setCityName(lat: location.latitude, lon: location.longitude)
-        setWeather(lat: location.latitude, lon: location.longitude)
+        setWeatherView(coordinate: coordinate)
+    }
+    
+    func setWeatherView(coordinate c: Coordinate) {
+        setCityName(lat: c.latitude, lon: c.longitude)
+        setWeather(lat: c.latitude, lon: c.longitude)
     }
     
     func setWeather(lat: Double, lon: Double) {
