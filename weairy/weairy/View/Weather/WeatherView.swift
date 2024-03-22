@@ -191,12 +191,9 @@ struct WeatherView: View {
             )
         }
         .onChangeWithCondition(of: scenePhase) { newScenePhase in
-            switch newScenePhase {
-            case .active:
-                vm.fetchWeather(of: selectedCoordinates)
-                
-            default: break
-            }
+            guard newScenePhase == .active else { return }
+            
+            vm.fetchWeather(of: selectedCoordinates)
         }
         .onChangeWithCondition(of: selectedCoordinates) { newValue in
             vm.fetchWeather(of: selectedCoordinates)

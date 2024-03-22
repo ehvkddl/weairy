@@ -3,9 +3,9 @@
 # Weairy
 날씨요정이 날씨를 알려주는 날씨앱
 
-|<img width="200" src="./images/weather.png">|<img width="200" src="./images/weather2.png">|<img width="200" src="./images/widget.png">|
-|:-:|:-:|:-:|
-|오늘의 날씨|시간/요일별 날씨|위젯|
+|<img width="180" src="./images/weather.png">|<img width="180" src="./images/weather2.png">|<img width="180" src="./images/searchCity.GIF">|<img width="180" src="./images/widget.png">|
+|:-:|:-:|:-:|:-:|
+|오늘의 날씨|시간/요일별 날씨|검색|위젯|
 
 ## 목차
 
@@ -136,49 +136,51 @@ onChange 메서드를 사용하여 앱이 Background 상태에서 active 상태�
 
 ```swift
 // Custom Modifier
-struct OnChange: ViewModifier {
-    @Environment (\.scenePhase) var scenePhase
+struct OnChangeWithCondition<V: Equatable>: ViewModifier {
     
-    let activeCompletion: () -> Void
+    let value: V
+    let completion: (V) -> Void
     
-    init(activeCompletion: @escaping () -> Void) {
-        self.activeCompletion = activeCompletion
+    init(
+        value: V,
+        completion: @escaping (V) -> Void
+    ) {
+        self.value = value
+        self.completion = completion
     }
     
     func body(content: Content) -> some View {
         if #available(iOS 17.0, *) {
             content
-                .onChange(of: scenePhase) { oldScenePhase, newScenePhase in
-                    handleActiveState(newScenePhase)
+                .onChange(of: value) { oldValue, newValue in
+                    completion(newValue)
                 }
         } else {
             content
-                .onChange(of: scenePhase) { newScenePhase in
-                    handleActiveState(newScenePhase)
-                }
+                .onChange(of: value, perform: { newValue in
+                    completion(newValue)
+                })
         }
     }
     
-    func handleActiveState(_ newScenePhase: ScenePhase) {
-        switch newScenePhase {
-        case .active:
-            activeCompletion()
-        default:
-            print("Unexpected value")
-        }
-    }
 }
 
 extension View {
-    func onChange(activeCompletion: @escaping () -> ()) -> some View {
-        modifier(OnChange(activeCompletion: activeCompletion))
+    func onChangeWithCondition<V: Equatable>(
+        of value: V,
+        completion: @escaping (V) -> ()
+    ) -> some View {
+        modifier(OnChangeWithCondition(value: value, completion: completion))
     }
 }
+
 ```
 ```swift
 // WeatherView
-.onChange {
-    vm.fetchWeather()
+.onChangeWithCondition(of: scenePhase) { newScenePhase in
+    guard newScenePhase == .active else { return }
+    
+    vm.fetchWeather(of: selectedCoordinates)
 }
 ```
 
