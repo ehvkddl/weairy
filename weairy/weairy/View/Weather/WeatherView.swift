@@ -183,7 +183,7 @@ struct WeatherView: View {
                     }
             )
         }
-        .onAppear {
+        .onChange {
             vm.fetchWeather()
         }
         
