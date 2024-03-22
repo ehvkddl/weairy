@@ -9,7 +9,12 @@ import Combine
 import Foundation
 
 protocol WeatherService {
-    func fetchWeather() -> AnyPublisher<Weather, NetworkError>
+    func fetchWeather(
+        latitude: Double,
+        longitude: Double
+    ) -> AnyPublisher<Weather, NetworkError>
+    
+    func fetchCityName(lat: Double, lon: Double) -> AnyPublisher<String, Error>
 }
 
 class WeatherServiceImpl: WeatherService {
@@ -26,10 +31,13 @@ class WeatherServiceImpl: WeatherService {
 
 extension WeatherServiceImpl {
     
-    func fetchWeather() -> AnyPublisher<Weather, NetworkError> {
+    func fetchWeather(
+        latitude: Double,
+        longitude: Double
+    ) -> AnyPublisher<Weather, NetworkError> {
         let query = [
-            "lat": "37.5665851",
-            "lon": "126.9782038",
+            "lat": "\(latitude)",
+            "lon": "\(longitude)",
             "appid": Configurations.weatherKey,
             "units": "metric",
             "lang": "kr",
@@ -53,6 +61,36 @@ extension WeatherServiceImpl {
         }
         .eraseToAnyPublisher()
         
+    }
+    
+    func fetchCityName(lat: Double, lon: Double) -> AnyPublisher<String, Error> {
+        let query = [
+            "lat": "\(lat)",
+            "lon": "\(lon)",
+            "appid": Configurations.weatherKey,
+        ]
+        
+        return Future<String, Error> { [weak self] promise in
+            guard let `self` else { return }
+            
+            provider.fetchCityName(query: query)
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        promise(.failure(error))
+                    }
+                } receiveValue: { response in
+                    guard let response = response.first else {
+                        promise(.failure(NetworkError.dataNotFound))
+                        return
+                    }
+                    
+                    let cityName = response.localNames.ko
+                    
+                    promise(.success(cityName))
+                }
+                .store(in: &subscriptions)
+        }
+        .eraseToAnyPublisher()
     }
     
 }
