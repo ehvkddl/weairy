@@ -21,28 +21,29 @@ struct DailyWeatherView: View {
             Image(WeatherCondition.from(statusCode: weather.weatherID).rawValue)
                 .resizable()
                 .scaledToFit()
-                .padding(.trailing, 5)
             
             HStack(spacing: 10) {
                 HStack(alignment: .top, spacing: 0) {
                     Spacer()
                     Text("\(weather.tempMin)")
                         .font(WFont.style(.poppin, weight: .medium, size: 22))
+                        .minimumScaleFactor(0.5)
                     Text("°C")
-                        .font(WFont.style(.poppin, weight: .medium, size: 22))
+                        .font(WFont.style(.poppin, weight: .medium, size: 12))
                         .padding(.top, 3)
                 }
-                .frame(width: 45)
+                .frame(width: 48, alignment: .trailing)
                 .foregroundStyle(.fancyBlue)
                 
                 HStack(alignment: .top, spacing: 0) {
                     Text("\(weather.tempMax)")
                         .font(WFont.style(.poppin, weight: .medium, size: 22))
+                        .minimumScaleFactor(0.5)
                     Text("°C")
-                        .font(WFont.style(.poppin, weight: .medium, size: 22))
+                        .font(WFont.style(.poppin, weight: .medium, size: 12))
                         .padding(.top, 3)
                 }
-                .frame(width: 45)
+                .frame(width: 48, alignment: .trailing)
                 .foregroundStyle(.transitionBlue)
             }
             
