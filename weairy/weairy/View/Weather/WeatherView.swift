@@ -46,7 +46,7 @@ struct WeatherView: View {
                         showForcastView = false
                     } label: {
                         HStack(spacing: 0) {
-                            Text("서울")
+                            Text(vm.cityName)
                                 .font(WFont.style(.lato, weight: .bold, size: 18))
                             Image(systemName: "location.fill")
                         }
