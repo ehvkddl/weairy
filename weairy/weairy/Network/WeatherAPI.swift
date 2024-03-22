@@ -11,6 +11,7 @@ import Moya
 
 enum WeatherAPI {
     case fetchAll(query: [String: Any])
+    case fetchCityName(query: [String: Any])
 }
 
 extension WeatherAPI: TargetType {
@@ -21,19 +22,22 @@ extension WeatherAPI: TargetType {
     
     var path: String {
         switch self {
-        case .fetchAll: "3.0/onecall"
+        case .fetchAll: "data/3.0/onecall"
+        case .fetchCityName: "geo/1.0/reverse"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .fetchAll: return .get
+        case .fetchAll, .fetchCityName: return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
         case .fetchAll(let query):
+            return .requestParameters(parameters: query, encoding: URLEncoding.queryString)
+        case .fetchCityName(let query):
             return .requestParameters(parameters: query, encoding: URLEncoding.queryString)
         }
     }
