@@ -21,7 +21,8 @@ class DIContainer: ObservableObject {
     
     lazy var services: Service = {
         ServiceImpl(
-            weatherService: getWeatherService()
+            weatherService: getWeatherService(),
+            locationService: getLocationService()
         )
     }()
     
@@ -29,6 +30,10 @@ class DIContainer: ObservableObject {
         WeatherServiceImpl(
             provider: getWeatherProvider()
         )
+    }
+    
+    func getLocationService() -> LocationService {
+        LocationServiceImpl()
     }
     
     func getWeatherProvider() -> WeatherProvider {

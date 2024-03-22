@@ -23,5 +23,7 @@
 		<string>Lato-Bold.ttf</string>
 		<string>Lato-Black.ttf</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>현재 위치 날씨를 불러오기 위해서 동의가 필요해요.</string>
 </dict>
 </plist>
