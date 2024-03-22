@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct WeatherView: View {
+    @Environment (\.scenePhase) var scenePhase
+    @EnvironmentObject var container: DIContainer
+    
     @StateObject var vm: WeatherViewModel
     
+    @State private var selectedCoordinates: Coordinate?
+    
+    @State private var showCitySerachView: Bool = false
     @State private var showForcastView: Bool = false
     
     @State private var remainingScreenHeight: CGFloat = 0 // CurrentView 제외한 나머지 screen 높이
@@ -43,6 +49,7 @@ struct WeatherView: View {
                 HStack(spacing: 0) {
                     Button{
                         forecastViewOffsetHeight = plainOffsetHeight
+                        showCitySerachView = true
                         showForcastView = false
                     } label: {
                         HStack(spacing: 0) {
@@ -183,8 +190,23 @@ struct WeatherView: View {
                     }
             )
         }
-        .onChange {
-            vm.fetchWeather()
+        .onChangeWithCondition(of: scenePhase) { newScenePhase in
+            switch newScenePhase {
+            case .active:
+                vm.fetchWeather(of: selectedCoordinates)
+                
+            default: break
+            }
+        }
+        .onChangeWithCondition(of: selectedCoordinates) { newValue in
+            vm.fetchWeather(of: selectedCoordinates)
+        }
+        .fullScreenCover(isPresented: $showCitySerachView) {
+            CitySearchView(
+                vm: container.makeCitySerchViewModel(),
+                selectedCoordinates: $selectedCoordinates,
+                showCitySerachView: $showCitySerachView
+            )
         }
         
     }
