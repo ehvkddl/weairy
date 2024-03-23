@@ -205,7 +205,10 @@ struct WeatherView: View {
             )
             
             if showNotificationView {
-                NotificationView(showNotificationView: $showNotificationView)
+                NotificationView(
+                    vm: container.makeNotificationViewModel(),
+                    showNotificationView: $showNotificationView
+                )
             }
             
         }

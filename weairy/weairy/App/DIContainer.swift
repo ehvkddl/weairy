@@ -22,10 +22,12 @@ class DIContainer: ObservableObject {
     lazy var services: Service = {
         ServiceImpl(
             weatherService: getWeatherService(),
-            locationService: getLocationService()
+            locationService: getLocationService(),
+            notificationService: getNotificationService()
         )
     }()
     
+    // MARK: - Services
     func getWeatherService() -> WeatherService {
         WeatherServiceImpl(
             provider: getWeatherProvider()
@@ -36,23 +38,34 @@ class DIContainer: ObservableObject {
         LocationServiceImpl()
     }
     
+    func getNotificationService() -> NotificationService {
+        NotificationServiceImpl()
+    }
+    
+    // MARK: - Providers
     func getWeatherProvider() -> WeatherProvider {
         WeatherProviderImpl(
             networkManager: networkManager
         )
     }
     
+    // MARK: - Views
     func makeWeatherView() -> WeatherView {
         let vm = makeWeatherViewModel()
         return WeatherView(vm: vm)
     }
     
+    // MARK: - ViewModels
     func makeWeatherViewModel() -> WeatherViewModel {
         WeatherViewModel(services: services)
     }
     
     func makeCitySerchViewModel() -> CitySearchViewModel {
         CitySearchViewModel(services: services)
+    }
+    
+    func makeNotificationViewModel() -> NotificationViewModel {
+        NotificationViewModel(services: services)
     }
     
 }
