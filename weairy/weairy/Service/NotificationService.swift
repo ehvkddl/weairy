@@ -42,6 +42,7 @@ extension NotificationServiceImpl {
         content.title = "Weairy"
         content.body = "오늘의 날씨를 확인해보세요!"
         content.sound = UNNotificationSound.default
+        content.categoryIdentifier = Notification.todayWeather.rawValue
         
         var calendar = Calendar.current
         var dateComponents = DateComponents()
