@@ -11,6 +11,7 @@ struct NotificationView: View {
     @StateObject var vm: NotificationViewModel
     
     @Binding var showNotificationView: Bool
+    @Binding var isNotificationEnabled: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -42,6 +43,7 @@ struct NotificationView: View {
                 Button {
                     vm.saveNotification()
                     
+                    isNotificationEnabled = vm.isNotificationEnabled
                     showNotificationView = false
                 } label: {
                     Text("저장")
@@ -56,6 +58,9 @@ struct NotificationView: View {
             }
             .padding(12)
         }
+        .onAppear {
+            vm.isNotificationEnabled = isNotificationEnabled
+        }
         .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(.white)
@@ -69,6 +74,7 @@ struct NotificationView: View {
 #Preview {
     NotificationView(
         vm: .init(services: StubServices()),
-        showNotificationView: .constant(true)
+        showNotificationView: .constant(true), 
+        isNotificationEnabled: .constant(false)
     )
 }

@@ -18,8 +18,13 @@ class NotificationViewModel: ObservableObject {
     init(services: Service) {
         self.services = services
         
-        isNotificationEnabled = UserDefaultsHelper.notification.isEnabled
         notificationTime = UserDefaultsHelper.notification.scheduledTime ?? Date()
+        
+        $notificationTime
+            .sink { date in
+                print(date)
+            }
+            .store(in: &subscriptions)
     }
 }
 

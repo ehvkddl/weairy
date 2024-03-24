@@ -14,12 +14,15 @@ class WeatherViewModel: ObservableObject {
     @Published var dailyWeatherDatas: [Daily] = Daily.dummyDaily
     
     @Published var cityName: String = "--"
+    @Published var isNotificationEnabled: Bool = false
     
     private var services: Service
     private var subscriptions = Set<AnyCancellable>()
     
     init(services: Service) {
         self.services = services
+        
+        isNotificationEnabled = UserDefaultsHelper.notification.isEnabled
     }
     
     func fetchWeather(of coordinate: Coordinate?) {

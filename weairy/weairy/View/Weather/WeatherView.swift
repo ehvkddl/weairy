@@ -74,7 +74,7 @@ struct WeatherView: View {
                             showNotificationView = true
                         }
                     } label: {
-                        Image(systemName: "bell.fill")
+                        Image(systemName: vm.isNotificationEnabled ? "bell.fill" : "bell")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20)
@@ -207,7 +207,8 @@ struct WeatherView: View {
             if showNotificationView {
                 NotificationView(
                     vm: container.makeNotificationViewModel(),
-                    showNotificationView: $showNotificationView
+                    showNotificationView: $showNotificationView, 
+                    isNotificationEnabled: $vm.isNotificationEnabled
                 )
             }
             
