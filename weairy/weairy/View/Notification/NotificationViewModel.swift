@@ -17,6 +17,9 @@ class NotificationViewModel: ObservableObject {
     
     init(services: Service) {
         self.services = services
+        
+        isNotificationEnabled = UserDefaultsHelper.notification.isEnabled
+        notificationTime = UserDefaultsHelper.notification.scheduledTime ?? Date()
     }
 }
 
@@ -27,6 +30,9 @@ extension NotificationViewModel {
             isEnalbed: isNotificationEnabled,
             time: notificationTime
         )
+        
+        UserDefaultsHelper.notification.isEnabled = isNotificationEnabled
+        UserDefaultsHelper.notification.scheduledTime = isNotificationEnabled ? notificationTime : nil
     }
     
 }
