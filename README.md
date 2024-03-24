@@ -3,9 +3,11 @@
 # Weairy
 날씨요정이 날씨를 알려주는 날씨앱
 
-|<img width="180" src="./images/weather.png">|<img width="180" src="./images/weather2.png">|<img width="180" src="./images/searchCity.GIF">|<img width="180" src="./images/widget.png">|
-|:-:|:-:|:-:|:-:|
-|오늘의 날씨|시간/요일별 날씨|검색|위젯|
+|<img width="200" src="./images/weather.png">|<img width="200" src="./images/weather2.png">|<img width="200" src="./images/searchCity.GIF">|
+|:-:|:-:|:-:|
+|오늘의 날씨|시간/요일별 날씨|검색|
+|<img width="200" src="./images/widget.png">|<img width="200" src="./images/setNotification.GIF">|<img width="200" src="./images/notificationContentExtension.gif">|
+|위젯|알림 설정|알림|
 
 ## 목차
 
@@ -34,9 +36,9 @@
 ## 기술 스택
 
 - `SwiftUI` `MVVM` `Combine`
-- `WidgetKit` `UserNotifications`
+- `WidgetKit` `UserNotifications` `NotificationContentExtension`
 - `CoreLocation` `MapKit`
-- `Moya(15.0.3)`
+- `Moya(15.0.3)` `Lottie(4.4.1)`
 
 ## 구현 내용
 
