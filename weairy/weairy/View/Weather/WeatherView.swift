@@ -16,6 +16,7 @@ struct WeatherView: View {
     @State private var selectedCoordinates: Coordinate?
     
     @State private var showCitySerachView: Bool = false
+    @State private var showNotificationView: Bool = false
     @State private var showForcastView: Bool = false
     
     @State private var remainingScreenHeight: CGFloat = 0 // CurrentView 제외한 나머지 screen 높이
@@ -65,9 +66,22 @@ struct WeatherView: View {
                     Text(vm.currentWeather.weatherDescription)
                         .font(WFont.style(.lato, weight: .light, size: 18))
                         .padding(.leading, 5)
+                    
+                    Spacer()
+                    
+                    Button {
+                        withAnimation(.smooth) {
+                            showNotificationView = true
+                        }
+                    } label: {
+                        Image(systemName: vm.isNotificationEnabled ? "bell.fill" : "bell")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
+                    }
                 }
                 .padding(.top, 100)
-                .padding(.leading, 20)
+                .padding(.horizontal, 20)
                 .foregroundStyle(.white)
                 
                 
@@ -189,6 +203,15 @@ struct WeatherView: View {
                         forecastViewOffsetHeight = showForcastView ? expandOffsetHeight : plainOffsetHeight
                     }
             )
+            
+            if showNotificationView {
+                NotificationView(
+                    vm: container.makeNotificationViewModel(),
+                    showNotificationView: $showNotificationView, 
+                    isNotificationEnabled: $vm.isNotificationEnabled
+                )
+            }
+            
         }
         .onChangeWithCondition(of: scenePhase) { newScenePhase in
             guard newScenePhase == .active else { return }
